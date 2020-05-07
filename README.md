@@ -1,6 +1,6 @@
 # Hospital-Database
 
-This is an example Hospital Database. 
+This is an example Hospital Database created in PGAdmin 4 using PostgreSQL.
 
 The CreateTable script creates the tables for the hospital database. These tables include;
   - Department
