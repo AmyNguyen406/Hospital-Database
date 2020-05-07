@@ -1,20 +1,20 @@
-CREATE TABLE Unit(
-	unitID INT NOT NULL,
-	floor_num INT NOT NULL UNIQUE, /* Need UNIQUE constaint to prevent no unique constraint matching given keys for ref table */
-	unit_name VARCHAR(100) NOT NUll,
-	PRIMARY KEY(unitID)
+CREATE TABLE Department(
+	departmentID SERIAL NOT NULL UNIQUE,
+	floor_num VARCHAR(6) NOT NULL, 
+	department_name VARCHAR(100) NOT NUll,
+	PRIMARY KEY(floor_num, department_name)
 );
 
 CREATE TABLE Room(
-	room_num INT NOT NULL,
+	room_num VARCHAR(6) NOT NULL,
 	occupied BOOLEAN NOT NULL,
 	PRIMARY KEY(room_num)
 );
 
-CREATE TABLE UnitRooms(
-	unitID INT NOT NULL REFERENCES Unit(unitID),
-	room_num INT NOT NULL REFERENCES Room(room_num),
-	PRIMARY KEY(unitID, room_num)
+CREATE TABLE DepartmentRooms(
+	departmentID INT NOT NULL REFERENCES Department(departmentID),
+	room_num VARCHAR(6) NOT NULL REFERENCES Room(room_num),
+	PRIMARY KEY(departmentID, room_num)
 );
 
 
@@ -30,19 +30,11 @@ CREATE TABLE Employee(
 	phone VARCHAR(10) CHECK(LENGTH(phone) = 10) NOT NULL,
 	occupation VARCHAR(100) NOT NULL,
 	salary INT NOT NULL,
-	unitID INT NOT NULL,
+	departmentID INT NOT NULL,
 	PRIMARY KEY(employeeID),
-	FOREIGN KEY(unitID) REFERENCES Unit(unitID)
+	FOREIGN KEY(departmentID) REFERENCES Department(departmentID)
 );	
 
-CREATE TABLE Inpatient(
-	inpatientID INT NOT NULL,
-	floor_num INT NOT NULL,
-	room_num INT NOT NULL,
-	PRIMARY KEY(inpatientID),
-	FOREIGN KEY(floor_num) REFERENCES Unit(floor_num),
-	FOREIGN KEY(room_num) REFERENCES Room(room_num)
-);
 
 CREATE TABLE MedicalRecord(
 	med_recordID SERIAL NOT NULL,
@@ -60,9 +52,8 @@ CREATE TABLE Patient(
 	sex CHAR(1) CHECK(sex = 'M' OR sex = 'F') NOT NULL,
 	address VARCHAR(100) NOT NULL,
 	phone VARCHAR(10) CHECK(LENGTH(phone) = 10) NOT NULL,
-	inpatientID INT NOT NULL,
 	med_recordID INT NOT NULL,
-	FOREIGN KEY(inpatientID) REFERENCES Inpatient(inpatientID),
+	inpatient BOOLEAN NOT NULL,
 	FOREIGN KEY(med_recordID) REFERENCES MedicalRecord(med_recordID),
 	PRIMARY KEY(patientID)
 );
@@ -71,6 +62,13 @@ CREATE TABLE EmployeePatient(
 	employeeID INT NOT NULL REFERENCES Employee(employeeID),
 	patientID INT NOT NULL REFERENCES Patient(patientID),
 	PRIMARY KEY(employeeID, patientID)
+);
+
+CREATE TABLE Inpatient(
+	patientID INT NOT NULL REFERENCES Patient(patientID),
+	departmentID INT NOT NULL REFERENCES Department(departmentID),
+	room_num VARCHAR(6) NOT NULL REFERENCES Room(room_num),
+	PRIMARY KEY(patientID, departmentID, room_num)
 );
 
 
