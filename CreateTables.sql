@@ -36,13 +36,6 @@ CREATE TABLE Employee(
 );	
 
 
-CREATE TABLE MedicalRecord(
-	med_recordID SERIAL NOT NULL,
-	medication VARCHAR(1000),
-	illnesses VARCHAR(1000),
-	PRIMARY KEY(med_recordID)
-);
-
 CREATE TABLE Patient(
 	patientID SERIAL NOT NULL,
 	first_name VARCHAR(100) NOT NULL,
@@ -52,11 +45,19 @@ CREATE TABLE Patient(
 	sex CHAR(1) CHECK(sex = 'M' OR sex = 'F') NOT NULL,
 	address VARCHAR(100) NOT NULL,
 	phone VARCHAR(10) CHECK(LENGTH(phone) = 10) NOT NULL,
-	med_recordID INT NOT NULL,
 	inpatient BOOLEAN NOT NULL,
-	FOREIGN KEY(med_recordID) REFERENCES MedicalRecord(med_recordID),
 	PRIMARY KEY(patientID)
 );
+
+CREATE TABLE MedicalRecord(
+	med_recordID SERIAL NOT NULL,
+	medication VARCHAR(1000),
+	illnesses VARCHAR(1000),
+	patientID INT NOT NULL,
+	PRIMARY KEY(med_recordID),
+	FOREIGN KEY(patientID) REFERENCES Patient(patientID)
+);
+
 
 CREATE TABLE EmployeePatient(
 	employeeID INT NOT NULL REFERENCES Employee(employeeID),

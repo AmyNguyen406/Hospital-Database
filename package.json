@@ -1,0 +1,22 @@
+{
+  "name": "hospital-database",
+  "version": "1.0.0",
+  "description": "This is an example Hospital Database.",
+  "main": "populate.js",
+  "scripts": {
+    "test": "node populate.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AmyNguyen406/Hospital-Database.git"
+  },
+  "author": "Amy Nguyen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AmyNguyen406/Hospital-Database/issues"
+  },
+  "homepage": "https://github.com/AmyNguyen406/Hospital-Database#readme",
+  "dependencies": {
+    "pg": "^8.0.3"
+  }
+}

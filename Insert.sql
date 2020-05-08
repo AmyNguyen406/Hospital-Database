@@ -123,22 +123,24 @@ VALUES
 	(100008, 'Mykie', 'Azalea', 'Forrest', 888888888, '10-20-1997', 'F', 'Dallas, TX', '1098346507', 'Nurse', 60000, 4),
 	(100009, 'Alejandro', 'Emilio', 'Blanco', 999999999, '03-22-1965', 'M', 'Dallas, TX', '2039876042', 'Nurse', 85000, 5);
 	
-	
-INSERT INTO MedicalRecord(medication, illnesses)
-VALUES
-	('Fluticasone', 'Asthma'),
-	('Cetirizine', 'Seasonal Allergies'),
-	('Levothyroxine', 'Hypothyroidism'),
-	('Benazepril', 'High Blood Pressure'),
-	('Triamcinolone acetonide, Cetirizine', 'Eczema'); 
 	 
-INSERT INTO Patient(first_name, middle_name, last_name, birthday, sex, address, phone, med_recordID, inpatient)
+INSERT INTO Patient(first_name, middle_name, last_name, birthday, sex, address, phone, inpatient)
 VALUES
-	 ('Anisa', 'Lacey', 'Jones', '04-02-1999', 'F', 'Carrollton, TX', '9854651204', 1, TRUE),
-	 ('Ansu', null, 'Mani', '03-15-1979', 'F', 'Plano, TX', '2142220047', 2, FALSE),
-	 ('Louis', null, 'George', '09-21-1969', 'M', 'Dallas, TX', '9729899961', 3, FALSE),
-	 ('Sophia', 'Iris', 'Mendez', '10-22-1984', 'F', 'Dallas, TX', '4124445863', 4, TRUE),
-	 ('Spencer', 'Jackson', 'Reid', '02-02-1999', 'M', 'Dallas, TX', '5158790362', 5, FALSE);
+	 ('Anisa', 'Lacey', 'Jones', '04-02-1999', 'F', 'Carrollton, TX', '9854651204', TRUE),
+	 ('Ansu', null, 'Mani', '03-15-1979', 'F', 'Plano, TX', '2142220047', FALSE),
+	 ('Louis', null, 'George', '09-21-1969', 'M', 'Dallas, TX', '9729899961', FALSE),
+	 ('Sophia', 'Iris', 'Mendez', '10-22-1984', 'F', 'Dallas, TX', '4124445863', TRUE),
+	 ('Spencer', 'Jackson', 'Reid', '02-02-1999', 'M', 'Dallas, TX', '5158790362', FALSE);
+	 
+
+INSERT INTO MedicalRecord(medication, illnesses, patientID)
+VALUES
+	('Fluticasone', 'Asthma', 1),
+	('Cetirizine', 'Seasonal Allergies', 2),
+	('Levothyroxine', 'Hypothyroidism', 3),
+	('Benazepril', 'High Blood Pressure', 4),
+	('Triamcinolone acetonide, Cetirizine', 'Eczema', 5); 
+	
 
 INSERT INTO EmployeePatient(employeeID, patientID)
 VALUES
