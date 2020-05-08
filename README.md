@@ -1,6 +1,7 @@
 # Hospital-Database
 
 This is an example Hospital Database created in PGAdmin 4 using PostgreSQL.
+The database was populated using Node.js.
 
 The CreateTable script creates the tables for the hospital database. These tables include;
   - Department
