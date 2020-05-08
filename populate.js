@@ -31,4 +31,53 @@ const start = async() => {
     }
 }
 
+
+const insertEmployee = async(employeeID, first_name, middle_name, last_name, ssn, birthday, sex, 
+    address, phone, occupation, salary, departmentID) => {
+    try{
+        await hospitalDatabase.query(
+            `INSERT INTO Employee(employeeID, first_name, middle_name, last_name, ssn, birthday, sex, 
+                address, phone, occupation, salary, departmentID)
+            VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`,[employeeID, first_name, middle_name, last_name, ssn, birthday, sex, 
+                address, phone, occupation, salary, departmentID]
+        );
+
+        console.log(`Employee added.`)
+        return true;
+    }
+    catch(error) {
+        console.error(`Unable to insert employee: ${error}`);
+        return false;
+
+    }
+}
+
+const getNewestEmployeeID = async() => {
+    try{
+        var result = await hospitalDatabase.query(
+            `SELECT employeeID
+            FROM Employee
+            ORDER BY employeeID DESC
+            LIMIT 1;
+            `
+        );
+
+        var newestEmployeeID = result.rows[0]['employeeid']; //This is not a 2D array, this is returning the JSON object field, employeeid's, value. 
+        console.log(`Most recent employeeID is ${newestEmployeeID}.`);
+        return newestEmployeeID;
+
+    }
+    catch(error){
+        console.error(`Unable to find newest employee ID inserted: ${error}`);
+        return null;
+    }
+    
+}
+
+
 start();
+//insertEmployee(100010, `Tomoi`, `Davaidoi`, `Asuncoi`, 112548976, `05/02/1969`, `M`, `Fort Worth, TX`, `8005980485`, `Doctor`, 200000, 3);
+getNewestEmployeeID();
+
+
+
