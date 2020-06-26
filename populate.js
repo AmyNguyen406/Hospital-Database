@@ -80,9 +80,9 @@ const getNewestEmployeeID = async() => {
             LIMIT 1;
             `
         );
-        var newestEmployeeID = result.rows[0]["employeeid"]; // Returns the JSON object element, the employeeId's, value
-        console.log(`Most recent employeeID is ${newestEmployeeID + 1}.`);
-        return newestEmployeeID
+        var newestEmployeeID = Number(result.rows[0]["employeeid"]); // Returns the JSON object element, the employeeId's, value
+        console.log(`Most recent employeeID is ${newestEmployeeID}.`);
+        return newestEmployeeID;
     }
     
     catch(error) {
@@ -100,10 +100,11 @@ const fillEmployeeData = async(numberOfEmployees) => {
     try {
         for(var i=0; i < numberOfEmployees; i++) {
 
-            var newestEmployeeID = getNewestEmployeeID();
+            var newestEmployeeID = await getNewestEmployeeID() + 1;
             var randomSSN = Math.random().toString().slice(2,11); // Generates a random 9 digit number between 0 - 1 in string format (adjust the 11 to change the size)
             var randomPhone = Math.random().toString().slice(2,12); // Generates a random 10 digit number between 0 - 1 in string format (adjust the 12 to change the size)
-            var randomDepartmentID = 0; // TODO: Set it to generate a random int between the department ID range
+            var randomDepartmentID = Math.floor(Math.random() * 4) + 1  ; // Generate a random number between 1 and 4
+            
 
             insertEmployee(newestEmployeeID, "First Name", "Middle Name", "Last Name", randomSSN, "00/00/0000", "M", "City, State", randomPhone, "Doctor", 100000, randomDepartmentID); // TODO: fill this info with generated data
             
