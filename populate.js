@@ -6,6 +6,7 @@
 // First install pg from the commpand line using: npm install pg
 // Create a client object that will require the pg library
 const { Client } = require('pg');
+var randomName = require('node-random-name');
 
 // Filling out info for database connection.
 const hospitalDatabase = new Client({
@@ -91,6 +92,66 @@ const getNewestEmployeeID = async() => {
     }
 }
 
+const generateSex = async() => {
+    try{
+        var sexID = Math.floor(Math.random() * Math.floor(2));
+
+        if(sexID == 0){
+            return 'M';
+        } 
+        else{
+            return 'F'
+        };
+    }
+    catch(error){
+        console.error(`Unable to generate sex: ${error}`);
+    }
+}
+
+const generateFirstName = async(sex) => {
+    try{
+        if (sex == 'M'){
+            return randomName({first:true, gender: "male"});
+        }
+        else{
+            return randomName({first:true, gender: "female"});
+        }
+    }
+    catch(error){
+        console.error(`Unable to generate first name: ${error}`);
+        return null;
+    }
+}
+
+const generateMiddleName = async(sex) => {
+    try{
+        if (sex == 'M'){
+            return randomName({first:true, gender: "male"});
+        }
+        else{
+            return randomName({first:true, gender: "female"});
+        }
+    }
+    catch(error){
+        console.error(`Unable to generate middle name: ${error}`);
+        return null;
+    }
+}
+
+const generateBirthDate = async => {
+    try{
+        var month =  (Math.floor(Math.random() * (13 - 1)) + 1).toString(); //Generates random number from 1-12 and cast to string
+        var day = (Math.floor(Math.random() * (29 - 1)) + 1).toString(); //Generates random number from 1-28 and cast to string
+        var year = (Math.floor(Math.random() * (1999 - 1945)) + 1945).toString(); //Generates random number from 1945-1999 and cast to string
+        
+        return month + "/" + day + "/" + year;
+    }
+    catch(error){
+        console.error(`Unable to generate birthdate: ${error}`);
+        return null;
+    }
+}
+
 /**
  * Fills in the employee table with a number of employees to fill. This will continously call insertEmployee() and getNewestEmployeeID()
  *  'n' amount of times to generate employees. The employee data will be randomly generated through the use of libraries
@@ -104,9 +165,13 @@ const fillEmployeeData = async(numberOfEmployees) => {
             var randomSSN = Math.random().toString().slice(2,11); // Generates a random 9 digit number between 0 - 1 in string format (adjust the 11 to change the size)
             var randomPhone = Math.random().toString().slice(2,12); // Generates a random 10 digit number between 0 - 1 in string format (adjust the 12 to change the size)
             var randomDepartmentID = Math.floor(Math.random() * 4) + 1  ; // Generate a random number between 1 and 4
-            
+            var sex = await generateSex();
+            var firstName = await generateFirstName(sex);
+            var middleName = await generateMiddleName(sex);
+            var lastName = await randomName({last: true});
+            var dob = await generateBirthDate();
 
-            insertEmployee(newestEmployeeID, "First Name", "Middle Name", "Last Name", randomSSN, "00/00/0000", "M", "City, State", randomPhone, "Doctor", 100000, randomDepartmentID); // TODO: fill this info with generated data
+            insertEmployee(newestEmployeeID, firstName, middleName, lastName, randomSSN, dob, sex, "City, State", randomPhone, "Doctor", 100000, randomDepartmentID); // TODO: fill this info with generated data
             
         }
     }
