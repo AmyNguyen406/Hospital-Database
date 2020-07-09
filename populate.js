@@ -36,8 +36,8 @@ const start = async() => {
 
 
 /**
- * Inserts an employee into the database
- * @param {[PK] INT} employeeID 
+ * Parameters for Employee Table
+ * @param {[PK] INT} employeeid 
  * @param {VARCHAR(100)} first_name 
  * @param {VARCHAR(100)} middle_name 
  * @param {VARCHAR(100)} last_name 
@@ -49,7 +49,49 @@ const start = async() => {
  * @param {VARCHAR(100)} occupation 
  * @param {INT} salary 
  * @param {INT} departmentID 
- */
+*/
+
+/**
+ * Parameters for EmployeePatient Table 
+ * @param {[PK] INT} employeeid 
+ * @param {[PK] INT} patientid 
+*/
+
+/**
+ * Parameters for Inpatient Table
+ * @param {[PK] integer} patientid
+ * @param {[PK] integer} departmentID
+ * @param {[PK] VARCHAR(6)} room_num
+*/
+
+/**
+ * Parameters for MedicalRecord Table
+ * @param {[PK] integer} med_recordid
+ * @param {VARCHAR(1000)} medication
+ * @param {VARCHAR(1000)} illnesses
+ * @param {INT} patientid
+*/
+
+/**
+ *  Parameters for Patient Table
+ * @param {[PK] INT} patientid 
+ * @param {VARCHAR(100)} first_name 
+ * @param {VARCHAR(100)} middle_name 
+ * @param {VARCHAR(100)} last_name 
+ * @param {VARCHAR(100)} last_name
+ * @param {VARCHAR(100)} birthday 
+ * @param {CHAR(1)} sex 
+ * @param {VARCHAR(100)} address 
+ * @param {VARCHAR(10)} phone 
+ * @param {BOOLEAN} inpatient
+*/
+
+/**
+ * Parameters for Room
+ * @param {[PK]VARCHAR(6)} room_num
+ * @param {BOOLEAN} occupied
+*/
+
 const insertEmployee = async(employeeID, first_name, middle_name, last_name, ssn, birthday, sex, 
     address, phone, occupation, salary, departmentID) => {
     try {
