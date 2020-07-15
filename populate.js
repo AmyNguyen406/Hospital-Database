@@ -6,7 +6,9 @@
 // First install pg from the commpand line using: npm install pg
 // Create a client object that will require the pg library
 const { Client } = require('pg');
+var randomFName = require('node-random-name');
 var randomName = require('node-random-name');
+const cityData = require('./areas.json');
 
 // Filling out info for database connection.
 const hospitalDatabase = new Client({
@@ -52,13 +54,13 @@ const start = async() => {
 */
 
 /**
- * Parameters for EmployeePatient Table 
+ * Parameters for EmployeePatient Table (Asssociation Table)
  * @param {[PK] INT} employeeid 
  * @param {[PK] INT} patientid 
 */
 
 /**
- * Parameters for Inpatient Table
+ * Parameters for Inpatient Table (Association Table)
  * @param {[PK] integer} patientid
  * @param {[PK] integer} departmentID
  * @param {[PK] VARCHAR(6)} room_num
@@ -124,7 +126,7 @@ const getNewestEmployeeID = async() => {
             `
         );
         var newestEmployeeID = Number(result.rows[0]["employeeid"]); // Returns the JSON object element, the employeeId's, value
-        console.log(`Most recent employeeID is ${newestEmployeeID}.`);
+        // console.log(`Most recent employeeID is ${newestEmployeeID}.`);
         return newestEmployeeID;
     }
     
@@ -136,14 +138,14 @@ const getNewestEmployeeID = async() => {
 
 const generateSex = async() => {
     try{
-        var sexID = Math.floor(Math.random() * Math.floor(2));
+        var sexID = Math.floor(Math.random() * Math.floor(2)); //Generates either 0 or 1
 
         if(sexID == 0){
             return 'M';
         } 
         else{
-            return 'F'
-        };
+            return 'F';
+        }
     }
     catch(error){
         console.error(`Unable to generate sex: ${error}`);
@@ -153,10 +155,10 @@ const generateSex = async() => {
 const generateFirstName = async(sex) => {
     try{
         if (sex == 'M'){
-            return randomName({first:true, gender: "male"});
+            return randomFName({first:true, gender: "male"});
         }
         else{
-            return randomName({first:true, gender: "female"});
+            return randomFName({first:true, gender: "female"});
         }
     }
     catch(error){
@@ -180,7 +182,7 @@ const generateMiddleName = async(sex) => {
     }
 }
 
-const generateBirthDate = async => {
+const generateBirthDate = async() => {
     try{
         var month =  (Math.floor(Math.random() * (13 - 1)) + 1).toString(); //Generates random number from 1-12 and cast to string
         var day = (Math.floor(Math.random() * (29 - 1)) + 1).toString(); //Generates random number from 1-28 and cast to string
@@ -191,6 +193,48 @@ const generateBirthDate = async => {
     catch(error){
         console.error(`Unable to generate birthdate: ${error}`);
         return null;
+    }
+}
+
+const generateLocation = async() => {
+    try{
+        const randomCityNumber = Math.floor(Math.random() * (84 - 0)) + 0;
+        return cityData.Texas[randomCityNumber] + ", TX";
+    }
+    catch(error){
+        console.error(`Unable to generate location: ${error}`);
+        return null;
+    }
+}
+
+const generateOccupation = async() => {
+    try{
+        var sexID = Math.floor(Math.random() * Math.floor(2)); //Generates either 0 or 1
+
+        if(sexID == 0){
+            return 'Doctor';
+        } 
+        else{
+            return 'Nurse';
+        }
+    }
+    catch(error){
+        console.error(`Unable to generate sex: ${error}`);
+    }
+}
+
+const generateSalary = async(occupation) => {
+    try{
+        if (occupation == 'Nurse'){
+            return Math.floor(Math.random() * 95000) + 50000; //generate random number between 50,000 and 95,000
+
+        }
+        else {
+            return Math.floor(Math.random() * 300000) + 115000; //generate random number between 115,000 and 300,000  
+        }
+    }
+    catch(error){
+        console.error(`Unable to generate salary: ${error}`);
     }
 }
 
@@ -212,8 +256,11 @@ const fillEmployeeData = async(numberOfEmployees) => {
             var middleName = await generateMiddleName(sex);
             var lastName = await randomName({last: true});
             var dob = await generateBirthDate();
+            var address = await generateLocation();
+            var occupation = await generateOccupation();
+            var salary = await generateSalary(occupation);
 
-            insertEmployee(newestEmployeeID, firstName, middleName, lastName, randomSSN, dob, sex, "City, State", randomPhone, "Doctor", 100000, randomDepartmentID); // TODO: fill this info with generated data
+            insertEmployee(newestEmployeeID, firstName, middleName, lastName, randomSSN, dob, sex, address, randomPhone, occupation, salary, randomDepartmentID); // TODO: fill this info with generated data
             
         }
     }
@@ -226,9 +273,9 @@ const fillEmployeeData = async(numberOfEmployees) => {
 
 
 start();
-//insertEmployee(100010, `Tomoi`, `Davaidoi`, `Asuncoi`, 112548976, `05/02/1969`, `M`, `Fort Worth, TX`, `8005980485`, `Doctor`, 200000, 3);
-fillEmployeeData(1);
-// getNewestEmployeeID();
+
+fillEmployeeData(15);
+
 
 
 
