@@ -6,7 +6,8 @@
 // First install pg from the commpand line using: npm install pg
 // Create a client object that will require the pg library
 const { Client } = require('pg');
-var randomFName = require('node-random-name');
+var randomFName = require('./firstnames.json');
+var randomMName = require('./middlenames.json');
 var randomName = require('node-random-name');
 const cityData = require('./areas.json');
 
@@ -80,7 +81,6 @@ const start = async() => {
  * @param {VARCHAR(100)} first_name 
  * @param {VARCHAR(100)} middle_name 
  * @param {VARCHAR(100)} last_name 
- * @param {VARCHAR(100)} last_name
  * @param {VARCHAR(100)} birthday 
  * @param {CHAR(1)} sex 
  * @param {VARCHAR(100)} address 
@@ -155,10 +155,10 @@ const generateSex = async() => {
 const generateFirstName = async(sex) => {
     try{
         if (sex == 'M'){
-            return randomFName({first:true, gender: "male"});
+            return randomFName.MaleName[Math.floor(Math.random() * Math.floor(999))];
         }
         else{
-            return randomFName({first:true, gender: "female"});
+            return randomFName.FemaleName[Math.floor(Math.random() * Math.floor(999))];
         }
     }
     catch(error){
@@ -170,10 +170,10 @@ const generateFirstName = async(sex) => {
 const generateMiddleName = async(sex) => {
     try{
         if (sex == 'M'){
-            return randomName({first:true, gender: "male"});
+            return randomMName.MaleName[Math.floor(Math.random() * Math.floor(999))];
         }
         else{
-            return randomName({first:true, gender: "female"});
+            return randomMName.FemaleName[Math.floor(Math.random() * Math.floor(999))];
         }
     }
     catch(error){
@@ -260,7 +260,7 @@ const fillEmployeeData = async(numberOfEmployees) => {
             var occupation = await generateOccupation();
             var salary = await generateSalary(occupation);
 
-            insertEmployee(newestEmployeeID, firstName, middleName, lastName, randomSSN, dob, sex, address, randomPhone, occupation, salary, randomDepartmentID); // TODO: fill this info with generated data
+            insertEmployee(newestEmployeeID, firstName, middleName, lastName, randomSSN, dob, sex, address, randomPhone, occupation, salary, randomDepartmentID);
             
         }
     }
@@ -274,7 +274,7 @@ const fillEmployeeData = async(numberOfEmployees) => {
 
 start();
 
-fillEmployeeData(15);
+fillEmployeeData(1500);
 
 
 
