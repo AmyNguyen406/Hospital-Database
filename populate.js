@@ -8,7 +8,7 @@
 const { Client } = require('pg');
 var randomFName = require('./firstnames.json');
 var randomMName = require('./middlenames.json');
-var randomName = require('node-random-name');
+var randomSName = require('./surnames.json');
 const cityData = require('./areas.json');
 
 // Filling out info for database connection.
@@ -254,7 +254,7 @@ const fillEmployeeData = async(numberOfEmployees) => {
             var sex = await generateSex();
             var firstName = await generateFirstName(sex);
             var middleName = await generateMiddleName(sex);
-            var lastName = await randomName({last: true});
+            var lastName = await randomSName.Surnames[Math.floor(Math.random() * Math.floor(999))];
             var dob = await generateBirthDate();
             var address = await generateLocation();
             var occupation = await generateOccupation();
@@ -274,7 +274,7 @@ const fillEmployeeData = async(numberOfEmployees) => {
 
 start();
 
-fillEmployeeData(1500);
+fillEmployeeData(100);
 
 
 
