@@ -76,19 +76,6 @@ const start = async() => {
 */
 
 /**
- *  Parameters for Patient Table
- * @param {[PK] INT} patientid 
- * @param {VARCHAR(100)} first_name 
- * @param {VARCHAR(100)} middle_name 
- * @param {VARCHAR(100)} last_name 
- * @param {VARCHAR(100)} birthday 
- * @param {CHAR(1)} sex 
- * @param {VARCHAR(100)} address 
- * @param {VARCHAR(10)} phone 
- * @param {BOOLEAN} inpatient
-*/
-
-/**
  * Parameters for Room
  * @param {[PK]VARCHAR(6)} room_num
  * @param {BOOLEAN} occupied
@@ -240,7 +227,7 @@ const generateSalary = async(occupation) => {
 
 /**
  * Fills in the employee table with a number of employees to fill. This will continously call insertEmployee() and getNewestEmployeeID()
- *  'n' amount of times to generate employees. The employee data will be randomly generated through the use of libraries
+ *  'n' amount of times to generate employees. The employee data will be randomly generated through the use of libraries and JSON files. 
  * @param {int} numberOfEmployees 
  */
 const fillEmployeeData = async(numberOfEmployees) => {
@@ -271,10 +258,67 @@ const fillEmployeeData = async(numberOfEmployees) => {
     }
 }
 
+/**
+ *  Parameters for Patient Table
+ * @param {[PK] INT} patientid 
+ * @param {VARCHAR(100)} first_name 
+ * @param {VARCHAR(100)} middle_name 
+ * @param {VARCHAR(100)} last_name 
+ * @param {VARCHAR(100)} birthday 
+ * @param {CHAR(1)} sex 
+ * @param {VARCHAR(100)} address 
+ * @param {VARCHAR(10)} phone 
+ * @param {BOOLEAN} inpatient
+*/
+
+const insertPatient = async(patientid, first_name, middle_name, last_name, birthday, sex, address, phone, inpatient) => {
+    try {
+        await hospitalDatabase.query(
+            `INSERT INTO Employee(patientid, first_name, middle_name, last_name, birthday, sex, address, phone, inpatient)
+            VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)`,[patientid, first_name, middle_name, last_name, birthday, sex, address, phone, inpatient]
+        );
+        console.log(`Patient added.`)
+        return true;
+    }
+
+    catch(error) {
+        console.error(`Unable to insert patient: ${error}`);
+        return false;
+    }
+}
+
+/**
+ * Fills in the patient table with a number of patients to fill. This will continously call insertEmployee() and getNewestEmployeeID()
+ *  'n' amount of times to generate patients. The patient data will be randomly generated through the use of libraries and JSON files. 
+ * @param {int} numberOfEmployees 
+ */
+
+const fillPatientData = async(numberOfPatients) => {
+    try{
+        var newestPatientID = null;
+        var firstName = null;
+        var middleName = null;
+        var lastName = null;
+        var dob = null;
+        var sex = null;
+        var address = null;
+        var randomPhone = null;
+        var inpatient = false;
+
+        insertPatient(newestPatientID, firstName, middleName, lastName, dob, sex, address, randomPhone, inpatient);
+    }
+
+    catch(error) {
+        console.error(`Unable to fill patient data - details: ${error}`);
+        return null;
+    }
+}
+
 
 start();
 
 fillEmployeeData(100);
+fillPatientData(10);
 
 
 
