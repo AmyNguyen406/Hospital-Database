@@ -234,7 +234,7 @@ const fillEmployeeData = async(numberOfEmployees) => {
     try {
         for(var i=0; i < numberOfEmployees; i++) {
 
-            var newestEmployeeID = await getNewestEmployeeID() + 1;
+            var newestEmployeeID = await getNewestEmployeeID() + 1; //TODO: If statement for if database is empty the employeeID = 100000
             var randomSSN = Math.random().toString().slice(2,11); // Generates a random 9 digit number between 0 - 1 in string format (adjust the 11 to change the size)
             var randomPhone = Math.random().toString().slice(2,12); // Generates a random 10 digit number between 0 - 1 in string format (adjust the 12 to change the size)
             var randomDepartmentID = Math.floor(Math.random() * 4) + 1  ; // Generate a random number between 1 and 4
