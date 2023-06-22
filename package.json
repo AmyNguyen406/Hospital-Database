@@ -18,6 +18,6 @@
   "homepage": "https://github.com/AmyNguyen406/Hospital-Database#readme",
   "dependencies": {
     "node-random-name": "^1.0.1",
-    "pg": "^8.0.3"
+    "pg": "^8.11.0"
   }
 }
